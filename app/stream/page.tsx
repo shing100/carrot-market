@@ -1,12 +1,12 @@
 import type { NextPage } from "next";
 
-const Live: NextPage = () => {
+const Stream: NextPage = () => {
     return (
-        <div className={"py-10 divide-y-2 space-y-4"}>
+        <div className={"py-10 divide-y-[1px] space-y-4"}>
             {[1,1,1,1,1,1].map((_, i) => (
                 <div className={"pt-4 px-4"} key={i}>
                     <div className={"w-full rounded-md shadow-sm bg-slate-300 aspect-video"}></div>
-                    <h3 className={"text-gray-700 text-lg mt-2"}>Let's try chat!</h3>
+                    <h3 className={"text-2xl mt-2 font-bold text-gray-900"}>Let's try chat!</h3>
                 </div>
             ))}
             <button className="fixed hover:bg-orange-500 transition-colors cursor-pointer  bottom-24 right-5 shadow-xl bg-orange-400 rounded-full p-4 border-transparent text-white">
@@ -29,4 +29,4 @@ const Live: NextPage = () => {
     );
 }
 
-export default Live;
+export default Stream;
