@@ -1,10 +1,15 @@
 import type { NextPage } from "next";
+import Layout from "../../../components/layout";
+import Input from "../../../components/input";
+import Button from "../../../components/button";
+import TextArea from "../../../components/textarea";
 
 const Upload: NextPage = () => {
     return (
-        <div className={"px-4 py-10"}>
+        <Layout canGoBack title={"상품 올리기"}>
+            <form className={"px-4 py-4 space-y-4"}>
             <div>
-                <label className={"w-full text-gray-600 hover:text-orange-500 hover:border-orange-500 flex items-center justify-center border-2 border-dashed border-gray-300 py-6 h-48 rounded-md"}>
+                <label className="w-full cursor-pointer text-gray-600 hover:border-orange-500 hover:text-orange-500 flex items-center justify-center border-2 border-dashed border-gray-300 h-48 rounded-md">
                     <svg
                         className="h-12 w-12"
                         stroke="currentColor"
@@ -19,32 +24,22 @@ const Upload: NextPage = () => {
                             strokeLinejoin="round"
                         />
                     </svg>
-
-                    <input className={"hidden"} type="file" />
+                    <input className="hidden" type="file" />
                 </label>
             </div>
-            <div className={"my-5"}>
-                <label className={"mb-1 block text-sm font-medium text-gray-700"} htmlFor={"name"}>Name</label>
-                <input id={"name"} className={"appearance-none pl-2 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"} type="text" />
-            </div>
-            <div className={"my-5"}>
-                <label className={"mb-1 block text-sm font-medium text-gray-700"} htmlFor={"price"}>Price</label>
-                <div className={"rounded-md shadow-sm relative flex items-center shadow-sm"}>
-                    <div className={"absolute pointer-events-none left-0 pl-3 flex items-center justify-center"}>
-                        <span className={"text-gray-500 text-sm"}>$</span>
-                    </div>
-                    <input id={"price"} className={"appearance-none pl-7 w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500"} type="text" placeholder="0.00" />
-                    <div className={"absolute right-0 pointer-events-none pr-3 flex items-center"}>
-                        <span className={"text-gray-500"}>USD</span>
-                    </div>
-                </div>
-            </div>
-            <div>
-                <label className={"mb-1 block text-sm font-medium text-gray-700"}>Description</label>
-                <textarea className={"mt-1 resize-none shadow-sm w-full focus:ring-2 focus:ring-orange-500 rounded-md border-gray-300 focus:border-orange-500"} rows={6} />
-            </div>
-            <button className={"mt-3 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none"}>Upload product</button>
-        </div>
+                <Input required label="Name" name="name" type="text" />
+                <Input
+                    required
+                    label="Price"
+                    placeholder="10000"
+                    name="price"
+                    type="text"
+                    kind="price"
+                />
+                <TextArea name="description" label="Description" />
+                <Button text="Upload item" />
+            </form>
+        </Layout>
     );
 };
 
