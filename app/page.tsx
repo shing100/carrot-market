@@ -2,7 +2,7 @@ import Layout from "../components/layout";
 
 export default function Page() {
     return (
-        <Layout title={"홈"}>
+        <Layout title={"홈"} hasTabBar>
             <div className={"flex flex-col space-y-5"}>
                 {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
                     <div key={i} className={"flex px-4 border-b pb-4 cursor-pointer justify-between"}>

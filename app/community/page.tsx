@@ -1,8 +1,10 @@
 import type { NextPage } from "next";
+import Layout from "../../components/layout";
 
 const Community: NextPage = () => {
     return (
-        <div className={"py-16 px-4 space-y-8"}>
+        <Layout hasTabBar title={"커뮤니티"}>
+            <div className={"py-10 px-4 space-y-8"}>
             {[1,2,3,4,5,6,7].map((_ ,i) => (
                 <div key={i} className={"cursor-pointer flex flex-col items-start"}>
                 <span className={"flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-900"}>동네질문</span>
@@ -11,7 +13,7 @@ const Community: NextPage = () => {
                     여기에서 가장 맛있는 만두집이 어디예요?
                 </div>
                 <div className={"mt-5 flex items-center justify-between w-full text-gray-500 font-medium text-xs"}>
-                    <span>니꼬</span>
+                    <span>당근당근</span>
                     <span>18시간 전</span>
                 </div>
                 <div className={"flex space-x-5 mt-3 text-gray-700 py-2.5 border-t border-b-[2px] w-full"}>
@@ -69,6 +71,7 @@ const Community: NextPage = () => {
                 </svg>
             </button>
         </div>
+        </Layout>
     );
 };
 
