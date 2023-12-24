@@ -52,7 +52,9 @@ export default function Enter() {
                         })} name="email" label="Email address" type="email" required />
                     ) : null}
                     {method === "phone" ? (
-                        <Input register={register("phone")}
+                        <Input register={register("phone", {
+                            required: true,
+                        })}
                             name="phone"
                             label="Phone number"
                             type="number"
