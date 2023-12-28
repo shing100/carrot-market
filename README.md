@@ -42,3 +42,33 @@ WSL 사용시
 3. pscale_0.93.0_linux_amd64.deb 다운(ubuntu를 사용중인 경우)
 4. 다운로드된 경로로 이동하여 $ sudo dpkg --install pscale_0.93.0_linux_amd64.deb
 5. $ pscale 로 잘 설치됐는지 확인
+
+## PlanetScale CLI
+1. $ pscale auth login
+
+## npx prisma studio
+## npx prisma db push
+
+## Prisma Client
+TypeScript 및 Node.js용 직관적인 데이터베이스 클라이언트
+- Prisma Client는 생각하는 방식으로 구성하고 앱에 맞춤화된 유형으로 Prisma 스키마에서 자동 생성되는 쿼리 빌더
+- npm install @prisma/client
+```
+import { PrismaClient } from '@prisma/client'
+
+const prisma = new PrismaClient()
+```
+https://www.prisma.io/docs/concepts/components/prisma-client
+
+- API route는 Next.js로 API를 빌드하기 위한 솔루션을 제공 
+- pages/api 폴더 내의 모든 파일은 /api/*에 매핑되며 API endpoint로 처리
+- server-side 전용 번들이며 client-side 번들 크기를 늘리지 않음
+- req: http.IncomingMessage의 인스턴스와 pre-built된 일부 미들웨어
+- res: http.ServerResponse의 인스턴스와 일부 helper함수
+- 예를 들어 다음 API 경로 pages/api/user.js는 상태 코드가 200인 json 응답을 반환
+```
+export default function handler(req, res) {
+res.status(200).json({ name: 'John Doe' })
+}
+```
+https://nextjs.org/docs/api-routes/introduction
