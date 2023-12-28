@@ -34,3 +34,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## PlanetScale
+WSL 사용시
+1. https://github.com/planetscale/cli#linux 접속
+2. releases를 클릭하여 해당 링크에 접속
+3. pscale_0.93.0_linux_amd64.deb 다운(ubuntu를 사용중인 경우)
+4. 다운로드된 경로로 이동하여 $ sudo dpkg --install pscale_0.93.0_linux_amd64.deb
+5. $ pscale 로 잘 설치됐는지 확인
