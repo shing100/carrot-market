@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { cls } from "../libs/utils";
+import { cls } from "../libs/client/utils";
 import { useRouter, usePathname } from "next/navigation";
 
 interface LayoutProps {

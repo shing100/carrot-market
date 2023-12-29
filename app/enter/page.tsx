@@ -1,17 +1,19 @@
 "use client";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { cls } from "../../libs/utils";
+import { cls } from "../../libs/client/utils";
 import Button from "../../components/button";
 import Input from "../../components/input";
+import useMutation from "../../libs/client/useMutation";
 
-interface EnterForm {
+interface AuthForm {
     email?: string;
     phone?: string;
 }
 
 export default function Enter() {
-    const { register, handleSubmit, reset } = useForm<EnterForm>();
+    const [auth, { loading, data, error }]  = useMutation("/api/users/auth");
+    const { register, handleSubmit, reset } = useForm<AuthForm>();
     const [method, setMethod] = useState<"email" | "phone">("email");
     const onEmailClick = () => {
         reset();
@@ -21,8 +23,9 @@ export default function Enter() {
         reset();
         setMethod("phone");
     };
-    const onValid = (data: EnterForm) => {
-        console.log(data);
+    const onValid = (data: AuthForm) => {
+        if (loading) return;
+        auth(data);
     };
     return (
         <div className={"mt-16 px-4"}>
@@ -62,9 +65,11 @@ export default function Enter() {
                             required
                         />
                     ) : null}
-                    {method === "email" ? <Button text={"Get login link"} /> : null}
+                    {method === "email" ? (
+                        <Button text={loading ? "Loading" : "Get login link"} />
+                    ) : null}
                     {method === "phone" ? (
-                        <Button text={"Get one-time password"} />
+                        <Button text={loading ? "Loading" : "Get one-time password"} />
                     ) : null}
                 </form>
                 <div className={"mt-6"}>
