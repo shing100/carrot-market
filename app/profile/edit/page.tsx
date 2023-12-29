@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
-import Input from "../../../components/input";
-import Layout from "../../../components/layout";
-import Button from "../../../components/button";
+import Input from "@/components/input";
+import Layout from "@/components/layout";
+import Button from "@/components/button";
 
 const EditProfile: NextPage = () => {
     return (
