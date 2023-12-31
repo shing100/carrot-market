@@ -86,3 +86,7 @@ Twilio는 전화 걸기 및 받기, 문자 메시지 보내기 및 받기, 웹 �
 - 특정 채널 및 번호 유형 중에서 선택하여 발신자를 메시징 서비스와 일치시키십시오.
 
 ### https://github.com/vvo/iron-session
+
+### https://authjs.dev/reference/adapter/prisma
+
+### https://swr.vercel.app/ko/docs/with-nextjs

@@ -16,16 +16,14 @@ export const POST = async (req: Request, res: Response) => {
         password: process.env.CARROT_SESSION_PASSWORD!,
     });
 
-    console.log(exists);
-    if (!exists) console.log(res.status);
+    if (!exists) NextResponse.json({ ok: false });
 
-    session.then((data) => {
-        data.user = {
+    session.then((session) => {
+        session.user = {
             id: exists?.userId,
         }
+        session.save();
     });
-
-    await (await session).save();
 
     return NextResponse.json({
         ok: true,

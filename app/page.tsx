@@ -1,10 +1,18 @@
+"use client";
 import Layout from "../components/layout";
 import Item from "../components/item";
 import FloatingButton from "../components/floating-button";
+import useUser from "@/libs/client/useUser";
+import Head from "next/head";
 
 export default function Page() {
+    const { user, isLoading } = useUser();
+    console.log(user, isLoading);
     return (
         <Layout title={"홈"} hasTabBar>
+            <Head>
+                <title>Home</title>
+            </Head>
             <div className={"flex flex-col space-y-5"}>
                 {[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1].map((_, i) => (
                     <Item
