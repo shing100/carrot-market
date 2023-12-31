@@ -72,3 +72,15 @@ res.status(200).json({ name: 'John Doe' })
 }
 ```
 https://nextjs.org/docs/api-routes/introduction
+
+
+## Twilio
+Twilio는 전화 걸기 및 받기, 문자 메시지 보내기 및 받기, 웹 서비스 API를 사용하여 기타 커뮤니케이션 기능 수행을 위한 프로그래밍 가능한 커뮤니케이션 도구를 제공합니다.
+> https://www.twilio.com/
+
+### Twilo Document
+> https://www.twilio.com/docs
+
+### Messaging Services
+- 메시징 서비스는 특정 사용 사례 및 메시징 캠페인을 위한 메시징 기능을 번들로 제공하는 컨테이너
+- 특정 채널 및 번호 유형 중에서 선택하여 발신자를 메시징 서비스와 일치시키십시오.

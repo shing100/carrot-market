@@ -1,5 +1,10 @@
+import mail from "@sendgrid/mail";
+import twilio from "twilio";
 import { NextResponse, NextRequest } from "next/server";
 import client from "@/libs/server/client";
+
+mail.setApiKey(process.env.SENDGRID_API_KEY!);
+const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 export const POST = async (req: Request) => {
     const { phone, email } = await req.json();
@@ -21,43 +26,25 @@ export const POST = async (req: Request) => {
             },
         },
     });
-    console.log(token);
-    /* if (email) {
-      user = await client.user.findUnique({
-        where: {
-          email,
-        },
-      });
-      if (user) console.log("found it.");
-      if (!user) {
-        console.log("Did not find. Will create.");
-        user = await client.user.create({
-          data: {
-            name: "Anonymous",
-            email,
-          },
-        });
-      }
-      console.log(user);
-    }
     if (phone) {
-      user = await client.user.findUnique({
-        where: {
-          phone: +phone,
-        },
-      });
-      if (user) console.log("found it.");
-      if (!user) {
-        console.log("Did not find. Will create.");
-        user = await client.user.create({
-          data: {
-            name: "Anonymous",
-            phone: +phone,
-          },
+        const message = await twilioClient.messages.create({
+            messagingServiceSid: process.env.TWILIO_MSID,
+            to: process.env.MY_PHONE!,
+            body: `Your login token is ${payload}.`,
         });
-      }
-      console.log(user);
-    } */
+        console.log(message);
+    } else if (email) {
+        const email = await mail.send({
+            from: "shing100@naver.com",
+            to: "shing100@naver.com",
+            subject: "Your Carrot Market Verification Email",
+            text: `Your token is ${payload}`,
+            html: `<strong>Your token is ${payload}</strong>`,
+        });
+        console.log(email);
+    }
+    console.log(token);
+
     return NextResponse.json({
         token
     });
