@@ -34,6 +34,7 @@ export const POST = async (req: Request, res: Response) => {
         });
         console.log(message);
     } else if (email) {
+        /*
         const email = await mail.send({
             from: "shing100@naver.com",
             to: "shing100@naver.com",
@@ -41,6 +42,7 @@ export const POST = async (req: Request, res: Response) => {
             text: `Your token is ${payload}`,
             html: `<strong>Your token is ${payload}</strong>`,
         });
+         */
         //console.log(email);
     }
     console.log(token);

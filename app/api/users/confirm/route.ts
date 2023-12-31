@@ -15,13 +15,18 @@ export const POST = async (req: Request, res: Response) => {
         cookieName: "carrotsession",
         password: process.env.CARROT_SESSION_PASSWORD!,
     });
+
     console.log(exists);
-    if (!exists) res.status;
-    session.user = {
-        id: exists?.userId,
-    };
+    if (!exists) console.log(res.status);
+
+    session.then((data) => {
+        data.user = {
+            id: exists?.userId,
+        }
+    });
 
     await (await session).save();
+
     return NextResponse.json({
         ok: true,
     });
