@@ -6,7 +6,7 @@ import client from "@/libs/server/client";
 mail.setApiKey(process.env.SENDGRID_API_KEY!);
 const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
-export const POST = async (req: Request) => {
+export const POST = async (req: Request, res: Response) => {
     const { phone, email } = await req.json();
     const user = phone ? { phone: +phone } : { email };
     const payload = Math.floor(100000 + Math.random() * 900000) + "";
@@ -41,11 +41,11 @@ export const POST = async (req: Request) => {
             text: `Your token is ${payload}`,
             html: `<strong>Your token is ${payload}</strong>`,
         });
-        console.log(email);
+        //console.log(email);
     }
     console.log(token);
 
     return NextResponse.json({
-        token
+        ok: true,
     });
 };
