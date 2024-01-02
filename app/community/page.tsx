@@ -6,7 +6,7 @@ import FloatingButton from "@/components/floating-button";
 const Community: NextPage = () => {
     return (
         <Layout hasTabBar title={"동네생활"}>
-            <div className="space-y-4 divide-y-[2px]">
+            <div className="space-y-2">
             {[1,2,3,4,5,6,7].map((_ ,i) => (
                 <Link legacyBehavior key={i} href={`/community/${i}`}>
                     <a className="flex cursor-pointer flex-col pt-4 items-start">
@@ -40,21 +40,21 @@ const Community: NextPage = () => {
                             <span>궁금해요 1</span>
                             </span>
                             <span className={"flex space-x-2 items-center text-sm"}>
-                            <svg
-                                className="w-4 h-4"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                  strokeLinecap="round"
-                                  strokeLinejoin="round"
-                                  strokeWidth="2"
-                                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                              ></path>
-                            </svg>
-                            <span>답변 1</span>
+                                <svg
+                                    className="w-4 h-4"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth="2"
+                                      d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                                  ></path>
+                                </svg>
+                                <span>답변 1</span>
                             </span>
                         </div>
                     </a>
