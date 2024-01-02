@@ -7,7 +7,6 @@ import Head from "next/head";
 
 export default function Page() {
     const { user, isLoading } = useUser();
-    console.log(user, isLoading);
     return (
         <Layout title={"홈"} hasTabBar>
             <Head>

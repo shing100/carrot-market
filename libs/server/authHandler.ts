@@ -1,6 +1,7 @@
-import { getIronSession } from "iron-session";
+import {getIronSession} from "iron-session";
 import {cookies} from "next/headers";
 import {NextResponse} from "next/server";
+import client from "@/libs/server/client";
 
 export default function authHandler(handler: (req: Request, res: Response, isPrivate?: boolean) => void) {
     return async (req: Request, res: Response, isPrivate = true) => {
@@ -10,8 +11,22 @@ export default function authHandler(handler: (req: Request, res: Response, isPri
         });
 
         if (isPrivate && !session.user) {
-            return NextResponse.redirect("/enter");
+            return NextResponse.json({
+                ok: false,
+                error: "Not authenticated",
+            });
         }
+
+        if (session.user) {
+            const profile = await client.user.findUnique({
+                where: {
+                    id: session.user.id,
+                }
+            });
+            session.user = profile;
+            req.session = session;
+        }
+
         return handler(req, res);
     }
 }

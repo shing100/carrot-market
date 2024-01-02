@@ -1,6 +1,6 @@
-import { NextResponse, NextRequest } from "next/server";
-import { cookies } from "next/headers";
-import { getIronSession } from "iron-session";
+import {NextResponse} from "next/server";
+import {cookies} from "next/headers";
+import {getIronSession} from "iron-session";
 import client from "@/libs/server/client";
 
 export const POST = async (req: Request, res: Response) => {
@@ -22,9 +22,9 @@ export const POST = async (req: Request, res: Response) => {
         session.user = {
             id: exists?.userId,
         }
-        session.save();
     });
 
+    await (await session).save();
     return NextResponse.json({
         ok: true,
     });

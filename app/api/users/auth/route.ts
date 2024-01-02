@@ -1,6 +1,6 @@
 import mail from "@sendgrid/mail";
 import twilio from "twilio";
-import { NextResponse, NextRequest } from "next/server";
+import {NextResponse} from "next/server";
 import client from "@/libs/server/client";
 
 mail.setApiKey(process.env.SENDGRID_API_KEY!);
