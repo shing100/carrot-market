@@ -10,7 +10,6 @@ export const GET = authHandler(async (req: Request, res: Response) => {
     });
 });
 
-
 export const POST = authHandler(async (req: Request, res: Response) => {
     const { session: { user }} = req;
     const { name, price, description } = await req.json();

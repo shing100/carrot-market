@@ -1,8 +1,16 @@
-import type { NextPage } from "next";
+"use client";
+import type {NextPage} from "next";
+import Skeleton from 'react-loading-skeleton'
 import Layout from "@/components/layout";
 import Button from "@/components/button";
+import useSWR from "swr";
+import 'react-loading-skeleton/dist/skeleton.css'
+import Link from "next/link";
 
-const ItemDetail: NextPage = () => {
+const ItemDetail: NextPage = (params) => {
+    const { params : { id } } = params;
+    const { data } = useSWR(id ? `/api/products/${id}` : null);
+
     return (
         <Layout canGoBack>
             <div className={"px-4 py-4"}>
@@ -11,23 +19,34 @@ const ItemDetail: NextPage = () => {
                     <div className={"flex cursor-pointer py-3 border-t border-b items-center space-x-3"}>
                         <div className={"w-12 h-12 rounded-full bg-slate-300"} />
                         <div>
-                            <p className={"text-sm font-medium text-gray-700"}>Steve Jebs</p>
-                            <p className={"text-xs font-medium text-gray-500"}>View profile &rarr;</p>
+                            {data?.product?.user?.name ?
+                                <p className={"text-sm font-medium text-gray-700"}>{data?.product?.user?.name}</p>
+                                :
+                                <Skeleton count={1} />
+                            }
+                            <Link legacyBehavior href={`/user/profiles/${data?.product?.user?.id}`}>
+                                <a className={"text-xs font-medium text-gray-500"}>View profile &rarr;</a>
+                            </Link>
                         </div>
                     </div>
                     <div className={"mt-5"}>
-                        <h1 className={"text-3xl font-bold text-gray-900"}>Galaxy S50</h1>
-                        <span className={"text-2xl mt-3 text-gray-900 block"}>$140</span>
-                        <p className={"text-base my-6 text-gray-700"}>
-                            My money&apos;s in that office, right? If she start giving me some
-                            bullshit about it ain&apos;t there, and we got to go someplace else
-                            and get it, I&apos;m gonna shoot you in the head then and there.
-                            Then I&apos;m gonna shoot that bitch in the kneecaps, find out where
-                            my goddamn money is. She gonna tell me too. Hey, look at me when
-                            I&apos;m talking to you, motherfucker. You listen: we go in there,
-                            and that ni**a Winston or anybody else is in there, you the first
-                            motherfucker to get shot. You understand?
-                        </p>
+                        {data?.product?.name ?
+                            <h1 className={"text-3xl font-bold text-gray-900"}>{data?.product?.name}</h1>
+                            :
+                            <Skeleton height={'36px'} className={'mb-2'} count={1} />
+                        }
+                        {data?.product?.price ?
+                            <span className={"text-2xl mt-3 text-gray-900 block"}>{data?.product?.price}</span>
+                            :
+                            <Skeleton height={'32px'} className={'mb-2'} count={1} />
+                        }
+                        {data?.product?.description ?
+                            <p className={"text-base my-6 text-gray-700"}>
+                                {data?.product?.description}
+                            </p>
+                            :
+                            <Skeleton height={'20px'} count={2} className={'mb-2'} />
+                        }
                         <div className={"flex items-center justify-between space-x-2"}>
                             <Button large text="Talk to seller" />
                             <button className={"p-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-400"}>
