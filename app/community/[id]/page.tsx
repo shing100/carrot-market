@@ -7,6 +7,10 @@ import useSWR from "swr";
 import Link from "next/link";
 import useMutation from "@/libs/client/useMutation";
 import {cls} from "@/libs/client/utils";
+import {useForm} from "react-hook-form";
+import {useEffect} from "react";
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 interface AnswerWithUser extends Answer {
     user: User;
@@ -27,33 +31,59 @@ interface CommunityPostResponse {
     isWondering: boolean;
 }
 
+interface AnswerForm {
+    answer: string;
+}
+
+interface AnswerResponse {
+    ok: boolean;
+    answer: Answer;
+}
+
 const CommunityPostDetail: NextPage = (props) => {
     const { params } : any = props;
-    const { data, mutate, error } = useSWR<CommunityPostResponse>(params.id ? `/api/posts/${params.id}`:  null);
-    const [ wonder ] = useMutation(`/api/posts/${params.id}/wonder`);
+    const { register, handleSubmit, reset} = useForm<AnswerForm>();
+    const { data, mutate, error, isLoading } = useSWR<CommunityPostResponse>(params.id ? `/api/posts/${params.id}`:  null);
+    const [ wonder, { loading } ] = useMutation(`/api/posts/${params.id}/wonder`);
     const onWonderClick = () => {
         mutate({
             ...data,
             post: {
                 ...data?.post,
                 _count: {
-                    ...data?.post._count,
+                    ...data?.post?._count,
                     wondering: data?.isWondering ? data?.post?._count.wondering - 1 : data?.post?._count.wondering + 1,
                 },
             },
             isWondering: !data?.isWondering,
         }, false);
-        wonder({});
+        if (!loading) {
+            wonder({});
+        }
     }
+
+    const [ sendAnswer, { data: answerData,  loading: answerLoading, error: answerError } ] = useMutation<AnswerResponse>(`/api/posts/${params.id}/answers`);
+    const onValid = (form: AnswerForm) => {
+        if (answerLoading) return;
+        sendAnswer(form);
+    }
+    useEffect(() => {
+        if (answerError) console.log(answerError);
+        if (answerData && answerData.ok) {
+            reset();
+            mutate();
+        }
+    }, [answerData, reset, mutate]);
     return (
         <Layout canGoBack>
-            <div>
+            <div className="ml-1">
                 <span className="inline-flex my-3 ml-4 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                   동네질문
                 </span>
                 <div className="flex mb-3 px-4 cursor-pointer pb-3  border-b items-center space-x-3">
                     <div className="w-10 h-10 rounded-full bg-slate-300" />
                     <div>
+                        {isLoading ? <Skeleton count={1} /> : null}
                         <p className="text-sm font-medium text-gray-700">{data?.post?.user?.name}</p>
                         <Link legacyBehavior href={`/profile/${data?.post?.user?.id}`}>
                             <p className="text-xs font-medium text-gray-500">
@@ -64,8 +94,8 @@ const CommunityPostDetail: NextPage = (props) => {
                 </div>
                 <div>
                     <div className="mt-2 px-4 text-gray-700">
-                        <span className="text-orange-500 font-medium mr-1">Q. </span>{" "}
-                        {data?.post?.question}
+                        {isLoading ? <Skeleton count={1} width="70%"/> : <span className="text-orange-500 font-medium mr-1">Q. </span>}
+                        {" "}{data?.post?.question}
                     </div>
                         <div className="flex px-4 space-x-5 mt-3 text-gray-700 py-2.5 border-t border-b-[2px]  w-full">
                             <button onClick={onWonderClick} className={cls("flex space-x-2 items-center text-sm", data?.isWondering ? "text-teal-400" : "")}>
@@ -120,16 +150,19 @@ const CommunityPostDetail: NextPage = (props) => {
                         </div>
                     ))}
                 </div>
-                <div className="px-4">
-                    <TextArea
-                        name="description"
-                        placeholder="질문에 답변해주세요!"
-                        required
-                    />
-                    <button className="mt-2 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none ">
-                        작성하기
-                    </button>
-                </div>
+                <form onSubmit={handleSubmit(onValid)}>
+                    <div className="px-4">
+                        <TextArea
+                            register={register("answer", {required: true, minLength: 5})}
+                            name="description"
+                            placeholder="질문에 답변해주세요!"
+                            required
+                        />
+                        <button className="mt-2 w-full bg-orange-500 hover:bg-orange-600 text-white py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 focus:outline-none ">
+                            {answerLoading ? "Loading... " : "작성하기"}
+                        </button>
+                    </div>
+                </form>
             </div>
         </Layout>
     );
