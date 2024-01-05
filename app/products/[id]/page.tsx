@@ -7,6 +7,8 @@ import useSWR from "swr";
 import 'react-loading-skeleton/dist/skeleton.css'
 import Link from "next/link";
 import {Product, User} from "@prisma/client";
+import useMutation from "@/libs/client/useMutation";
+import {cls} from "@/libs/client/utils";
 
 interface ProductWithUser extends Product {
     user: User;
@@ -15,12 +17,20 @@ interface ProductWithUser extends Product {
 interface ItemDetailResponse {
     ok: boolean;
     product: ProductWithUser;
+    isLiked: boolean;
     relatedProducts: Product[];
 }
 
-const ItemDetail: NextPage = (params) => {
-    const { params : { id } } = params;
-    const { data } = useSWR<ItemDetailResponse>(id ? `/api/products/${id}` : null);
+
+const ItemDetail: NextPage = ( props ) => {
+    const { params } = props;
+    const { data, mutate } = useSWR<ItemDetailResponse>(params.id ? `/api/products/${params.id}` : null);
+    const [ toggleFav ] = useMutation(`/api/products/${params.id}/fav`);
+    const onFavClick = () => {
+        if (!data) return;
+        mutate({ ...data, isLiked: !data.isLiked }, false);
+        toggleFav({});
+    };
     return (
         <Layout canGoBack>
             <div className={"px-4 py-4"}>
@@ -59,13 +69,15 @@ const ItemDetail: NextPage = (params) => {
                         }
                         <div className={"flex items-center justify-between space-x-2"}>
                             <Button large text="Talk to seller" />
-                            <button className={"p-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-400"}>
+                            <button onClick={onFavClick}
+                                    className={cls("p-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-400")}
+                            >
                                 <svg
                                     className="h-6 w-6 "
                                     xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
+                                    fill={data?.isLiked ? "orange" : "none"}
                                     viewBox="0 0 24 24"
-                                    stroke="currentColor"
+                                    stroke={data?.isLiked ? "orange" : "currentColor"}
                                     aria-hidden="true"
                                 >
                                     <path
@@ -79,6 +91,7 @@ const ItemDetail: NextPage = (params) => {
                         </div>
                     </div>
                 </div>
+                {data && data.relatedProducts.length == 0 ? null :
                 <div>
                     <h2 className={"text-2xl font-bold text-gray-900"}>Similar items</h2>
                     <div className={"mt-6 grid grid-cols-2 gap-4"}>
@@ -93,6 +106,7 @@ const ItemDetail: NextPage = (params) => {
                         ))}
                     </div>
                 </div>
+                }
             </div>
         </Layout>
     );

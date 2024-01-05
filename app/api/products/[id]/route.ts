@@ -35,9 +35,21 @@ export const GET = authHandler(async (req: Request, res: Response) => {
         }
     })
 
+    const { session: { user }} = req;
+    const isLiked = Boolean(await client.fav.findFirst({
+            where: {
+                productId: product?.id,
+                userId: user.id,
+            },
+            select: {
+                id: true,
+            }
+        }));
+
     return NextResponse.json({
         ok: true,
         product,
+        isLiked,
         relatedProducts,
     })
 });
