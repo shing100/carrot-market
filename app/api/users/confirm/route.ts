@@ -11,18 +11,16 @@ export const POST = async (req: Request, res: Response) => {
             payload: token,
         },
     });
-    const session = getIronSession(cookies(), {
+    const session: any = await getIronSession(cookies(), {
         cookieName: "carrotsession",
         password: process.env.CARROT_SESSION_PASSWORD!,
     });
 
     if (!exists) NextResponse.json({ ok: false });
 
-    session.then((session) => {
-        session.user = {
-            id: exists?.userId,
-        }
-    });
+    session.user = {
+        id: exists?.userId,
+    }
 
     await (await session).save();
     return NextResponse.json({

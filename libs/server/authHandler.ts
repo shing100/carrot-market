@@ -5,7 +5,7 @@ import client from "@/libs/server/client";
 
 export default function authHandler(handler: (req: Request, res: Response, isPrivate?: boolean) => void) {
     return async (req: Request, res: Response, isPrivate = true) => {
-        const session = await getIronSession(cookies(), {
+        const session: any = await getIronSession(cookies(), {
             cookieName: "carrotsession",
             password: process.env.CARROT_SESSION_PASSWORD!
         });

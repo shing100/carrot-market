@@ -72,7 +72,7 @@ const ItemDetail: NextPage = ( props ) => {
                             <Skeleton height={'20px'} count={2} className={'mb-2'} />
                         }
                         <div className={"flex items-center justify-between space-x-2"}>
-                            <Button large text="Talk to seller" />
+                            <Button large text="대화하기" />
                             <button onClick={onFavClick}
                                     className={cls("p-3 rounded-md flex items-center justify-center text-gray-400 hover:bg-gray-100 hover:text-gray-400")}
                             >

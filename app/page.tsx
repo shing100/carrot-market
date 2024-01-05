@@ -9,7 +9,7 @@ import {Product} from "@prisma/client";
 
 interface ProudctWithHeart extends Product {
     _count: {
-        Favs: number;
+        favs: number;
     }
 }
 
@@ -34,7 +34,7 @@ export default function Page() {
                         key={product.id}
                         title={product.name}
                         price={product.price}
-                        hearts={product._count.Favs}
+                        hearts={product._count.favs}
                     />
                 ))}
                 <FloatingButton href="/products/upload">

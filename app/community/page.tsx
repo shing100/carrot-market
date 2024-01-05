@@ -9,7 +9,7 @@ const Community: NextPage = () => {
             <div className="space-y-2">
             {[1,2,3,4,5,6,7].map((_ ,i) => (
                 <Link legacyBehavior key={i} href={`/community/${i}`}>
-                    <a className="flex cursor-pointer flex-col pt-4 items-start">
+                    <a className="flex cursor-pointer ml-2 flex-col pt-4 items-start">
                         <span className="flex ml-4 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
                             동네질문
                         </span>

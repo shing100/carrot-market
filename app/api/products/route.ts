@@ -7,7 +7,7 @@ export const GET = authHandler(async (req: Request, res: Response) => {
         include: {
             _count: {
                 select: {
-                    Favs: true,
+                    favs: true,
                 }
             },
         }
