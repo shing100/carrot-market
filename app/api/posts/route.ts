@@ -3,6 +3,9 @@ import {NextResponse} from "next/server";
 import authHandler from "@/libs/server/authHandler";
 
 export const GET = authHandler(async (req: Request, res: Response) => {
+    const params = new URLSearchParams(req.url.split("?")[1]);
+    const latitude = Number(params.get("latitude"));
+    const longitude = Number(params.get("longitude"));
     const { session : { user }}: any = req;
     const posts = await client.post.findMany({
         include: {
@@ -23,6 +26,16 @@ export const GET = authHandler(async (req: Request, res: Response) => {
                     userId: user?.id,
                 },
             }
+        },
+        where: {
+            latitude: {
+                gte: latitude - 0.02,
+                lte: latitude + 0.02,
+            },
+            longitude: {
+                gte: longitude - 0.02,
+                lte: longitude + 0.02,
+            },
         }
     }).then(posts => posts.map(post => ({
         ...post,
@@ -37,10 +50,12 @@ export const GET = authHandler(async (req: Request, res: Response) => {
 
 export const POST = authHandler(async (req: Request, res: Response) => {
     const { session : { user }}: any = req;
-    const { question } = await req.json();
+    const { question, latitude, longitude } = await req.json();
     const post = await client.post.create({
         data: {
             question,
+            latitude,
+            longitude,
             user: {
                 connect: {
                     id: user?.id,

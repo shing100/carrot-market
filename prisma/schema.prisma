@@ -47,6 +47,8 @@ model Product {
   image       String
   name        String
   price       Int
+  latitude    Float?
+  longitude   Float?
   description String   @db.MediumText
   favs        Fav[]
 
@@ -73,6 +75,8 @@ model Post {
   user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
   question  String      @db.MediumText
+  latitude  Float?
+  longitude Float?
   answers   Answer[]
   wondering Wondering[]
 

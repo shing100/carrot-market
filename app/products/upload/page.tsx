@@ -9,6 +9,7 @@ import useMutation from "@/libs/client/useMutation";
 import {useEffect} from "react";
 import {Product} from "@prisma/client";
 import {useRouter} from "next/navigation";
+import useCoords from "@/libs/client/useCoords";
 
 interface UploadProductForm {
     name: string;
@@ -22,12 +23,13 @@ interface UploadProductMutation {
 }
 
 const Upload: NextPage = () => {
+    const { latitude, longitude } = useCoords();
     const router = useRouter();
     const { register, handleSubmit } = useForm<UploadProductForm>();
     const [ uploadProduct, { loading, data }] = useMutation<UploadProductMutation>("/api/products");
     const onValid = (data: UploadProductForm) => {
         if (loading) return;
-        uploadProduct(data);
+        uploadProduct({...data, latitude, longitude});
     }
     useEffect(() => {
         if (data?.ok) {
