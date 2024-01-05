@@ -4,7 +4,7 @@ import authHandler from "@/libs/server/authHandler";
 export const GET = authHandler(async (req: Request, res: Response) => {
     if (!req.session.user) return NextResponse.json({ ok: false });
 
-    const { session : { user }} = req;
+    const { session : { user }}: any = req;
 
     return NextResponse.json({
         ok: true,

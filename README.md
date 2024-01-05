@@ -90,3 +90,18 @@ Twilio는 전화 걸기 및 받기, 문자 메시지 보내기 및 받기, 웹 �
 ### https://authjs.dev/reference/adapter/prisma
 
 ### https://swr.vercel.app/ko/docs/with-nextjs
+
+
+## Mutaion
+- useSWRConfig() hook으로부터 mutate 함수를 얻을 수 있으며, mutate(key)를 호출하여 동일한 키를 사용하는 다른 SWR hook*에게 revalidation 메시지를 전역으로 브로드캐스팅할 수 있다.
+- mutate를 사용하면 로컬 데이터를 업데이트하는 동시에 유효성을 다시 검사하고 최종적으로 최신 데이터로 바꿀 수 있다.
+```
+const { mutate } = useSWRConfig();
+
+// 로컬 데이터를 즉시 업데이트하지만, revalidation은 비활성화
+mutate('/api/user', { ...data, name: newName }, false)
+
+// 이 키가 있는 모든 SWR에 revalidate하도록 하고, 로컬 데이터가 올바른지 확인하기 위해 갱신(refetch) 트리거 ("/api/user"에 refetch를 함)
+mutate('/api/user');
+```
+> https://swr.vercel.app/docs/mutation

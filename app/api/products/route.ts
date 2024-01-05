@@ -3,7 +3,15 @@ import {NextResponse} from "next/server";
 import authHandler from "@/libs/server/authHandler";
 
 export const GET = authHandler(async (req: Request, res: Response) => {
-    const products = await client.product.findMany({});
+    const products = await client.product.findMany({
+        include: {
+            _count: {
+                select: {
+                    Favs: true,
+                }
+            },
+        }
+    });
     return NextResponse.json({
         ok: true,
         products,
@@ -11,7 +19,7 @@ export const GET = authHandler(async (req: Request, res: Response) => {
 });
 
 export const POST = authHandler(async (req: Request, res: Response) => {
-    const { session: { user }} = req;
+    const { session: { user }}: any = req;
     const { name, price, description } = await req.json();
 
     const product = await client.product.create({

@@ -5,6 +5,8 @@ import authHandler from "@/libs/server/authHandler";
 export const GET = authHandler(async (req: Request, res: Response) => {
     const url = new URL(req.url);
     const id = url.pathname.split('/')[3]
+    const { session: { user }}: any = req;
+
     const product = await client.product.findUnique({
         where: {
             id: +id.toString(),
@@ -35,7 +37,6 @@ export const GET = authHandler(async (req: Request, res: Response) => {
         }
     })
 
-    const { session: { user }} = req;
     const isLiked = Boolean(await client.fav.findFirst({
             where: {
                 productId: product?.id,
