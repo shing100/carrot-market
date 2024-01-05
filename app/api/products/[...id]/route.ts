@@ -19,9 +19,25 @@ export const GET = authHandler(async (req: Request, res: Response) => {
             },
         }
     })
+    const terms = product?.name.split(" ").map(word => ({
+        name: {
+            contains: word,
+        }
+    }));
+    const relatedProducts = await client.product.findMany({
+        where: {
+            OR: terms,
+            AND: {
+                id: {
+                    not: product?.id,
+                }
+            }
+        }
+    })
 
     return NextResponse.json({
         ok: true,
-        product
+        product,
+        relatedProducts,
     })
 });

@@ -6,11 +6,21 @@ import Button from "@/components/button";
 import useSWR from "swr";
 import 'react-loading-skeleton/dist/skeleton.css'
 import Link from "next/link";
+import {Product, User} from "@prisma/client";
+
+interface ProductWithUser extends Product {
+    user: User;
+}
+
+interface ItemDetailResponse {
+    ok: boolean;
+    product: ProductWithUser;
+    relatedProducts: Product[];
+}
 
 const ItemDetail: NextPage = (params) => {
     const { params : { id } } = params;
-    const { data } = useSWR(id ? `/api/products/${id}` : null);
-
+    const { data } = useSWR<ItemDetailResponse>(id ? `/api/products/${id}` : null);
     return (
         <Layout canGoBack>
             <div className={"px-4 py-4"}>
@@ -36,7 +46,7 @@ const ItemDetail: NextPage = (params) => {
                             <Skeleton height={'36px'} className={'mb-2'} count={1} />
                         }
                         {data?.product?.price ?
-                            <span className={"text-2xl mt-3 text-gray-900 block"}>{data?.product?.price}</span>
+                            <span className={"text-2xl mt-3 text-gray-900 block"}>{data?.product?.price}원</span>
                             :
                             <Skeleton height={'32px'} className={'mb-2'} count={1} />
                         }
@@ -72,12 +82,14 @@ const ItemDetail: NextPage = (params) => {
                 <div>
                     <h2 className={"text-2xl font-bold text-gray-900"}>Similar items</h2>
                     <div className={"mt-6 grid grid-cols-2 gap-4"}>
-                        {[1, 2, 3, 4, 5, 6].map((_, i) => (
-                            <div key={i}>
-                                <div className={"h-56 w-full mb-4 bg-slate-300"} />
-                                <h3 className={"-mb-1 text-gray-700"}>Galaxy S60</h3>
-                                <span className={"text-sm font-medium text-gray-900"}>$6</span>
-                            </div>
+                        {data?.relatedProducts.map((product) => (
+                            <Link legacyBehavior href={`/products/${product.id}`}>
+                                <div key={product.id} className={'cursor-pointe'}>
+                                        <div className={"h-56 w-full mb-4 bg-slate-300"} />
+                                        <h3 className={"-mb-1 text-gray-700"}>{product.name}</h3>
+                                        <span className={"text-sm font-medium text-gray-900"}>{product.price}원</span>
+                                </div>
+                            </Link>
                         ))}
                     </div>
                 </div>
