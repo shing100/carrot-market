@@ -48,7 +48,7 @@ const ItemDetail: NextPage = ( props ) => {
                                 :
                                 <Skeleton count={1} />
                             }
-                            <Link legacyBehavior href={`/user/profiles/${data?.product?.user?.id}`}>
+                            <Link legacyBehavior href={`/profile/${data?.product?.user?.id}`}>
                                 <a className={"text-xs font-medium text-gray-500"}>View profile &rarr;</a>
                             </Link>
                         </div>
