@@ -52,7 +52,7 @@ const CommunityPostDetail: NextPage = (props) => {
                 ...data?.post,
                 _count: {
                     ...data?.post?._count,
-                    wondering: data?.isWondering ? data?.post?._count.wondering - 1 : data?.post?._count.wondering + 1,
+                    wondering: data?.isWondering ? data?.post?._count?.wondering - 1 : data?.post?._count?.wondering + 1,
                 },
             },
             isWondering: !data?.isWondering,

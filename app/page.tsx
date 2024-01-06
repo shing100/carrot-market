@@ -7,7 +7,7 @@ import Head from "next/head";
 import useSWR from "swr";
 import {Product} from "@prisma/client";
 
-interface ProudctWithHeart extends Product {
+export interface ProudctWithHeart extends Product {
     _count: {
         favs: number;
     }

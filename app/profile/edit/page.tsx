@@ -1,9 +1,12 @@
-import type { NextPage } from "next";
+"use client";
+import type {NextPage} from "next";
 import Input from "@/components/input";
 import Layout from "@/components/layout";
 import Button from "@/components/button";
+import useUser from "@/libs/client/useUser";
 
 const EditProfile: NextPage = () => {
+    const { user } = useUser();
     return (
         <Layout canGoBack title="Edit Profile">
             <form className="py-10 px-4 space-y-4">

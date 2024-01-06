@@ -105,3 +105,6 @@ mutate('/api/user', { ...data, name: newName }, false)
 mutate('/api/user');
 ```
 > https://swr.vercel.app/docs/mutation
+
+### Relation count
+- https://www.prisma.io/docs/concepts/components/prisma-client/aggregation-grouping-summarizing#filter-the-relation-count

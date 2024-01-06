@@ -39,7 +39,7 @@ const ItemDetail: NextPage = ( props ) => {
     };
     return (
         <Layout canGoBack>
-            <div className={"px-4 py-4"}>
+            <div key={data?.product?.id} className={"px-4 py-4"}>
                 <div className={"mb-8"}>
                     <div className={"h-96 bg-slate-300"} />
                     <div className={"flex cursor-pointer py-3 border-t border-b items-center space-x-3"}>
@@ -102,7 +102,7 @@ const ItemDetail: NextPage = ( props ) => {
                     <h2 className={"text-2xl font-bold text-gray-900"}>Similar items</h2>
                     <div className={"mt-6 grid grid-cols-2 gap-4"}>
                         {data?.relatedProducts.map((product) => (
-                            <Link legacyBehavior href={`/products/${product.id}`}>
+                            <Link key={product.id} legacyBehavior href={`/products/${product.id}`}>
                                 <div key={product.id} className={'cursor-pointe'}>
                                         <div className={"h-56 w-full mb-4 bg-slate-300"} />
                                         <h3 className={"-mb-1 text-gray-700"}>{product.name}</h3>

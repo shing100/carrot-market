@@ -29,7 +29,6 @@ const Community: NextPage = () => {
             ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
             : null
     );
-    console.log(data);
     return (
         <Layout hasTabBar title={"동네생활"}>
             <div className="space-y-2">
@@ -45,7 +44,7 @@ const Community: NextPage = () => {
                         </div>
                         <div className={"mt-5 px-2 flex items-center justify-between w-full text-gray-500 font-medium text-xs"}>
                             <span>{post.user.name}</span>
-                            <span>{post.createdAt}</span>
+                            <span>{post.createdAt.toString()}</span>
                         </div>
                         <div className={"px-2 flex space-x-5 mt-3 text-gray-700 py-2.5 border-t border-b-[2px] w-full"}>
                             <span className={cls("flex space-x-2 items-center text-sm", post.wondering ? "text-teal-400" : "")}>
