@@ -12,11 +12,17 @@ export const GET = authHandler(async (req: Request, res: Response) => {
             id: +id.toString(),
         },
         include: {
-            user: {
+            messages: {
                 select: {
                     id: true,
-                    name: true,
-                    avatar: true,
+                    message: true,
+                    user: {
+                        select: {
+                            id: true,
+                            name: true,
+                            avatar: true,
+                        }
+                    }
                 }
             },
         }
