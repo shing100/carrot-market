@@ -7,6 +7,9 @@ import useSWR from "swr";
 import {Post, User} from "@prisma/client";
 import {cls} from "@/libs/client/utils";
 import useCoords from "@/libs/client/useCoords";
+import {useInfiniteScroll} from "@/libs/client/useinfiniteScroll";
+import {useEffect} from "react";
+import useSWRInfinite from "swr/infinite";
 
 interface PostWithUser extends Post {
     user: User;
@@ -20,19 +23,27 @@ interface PostWithUser extends Post {
 interface PostsResponse {
     ok: boolean;
     posts: PostWithUser[];
+    pages: number;
 }
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 const Community: NextPage = () => {
     const { latitude, longitude } = useCoords();
-    const { data } = useSWR<PostsResponse>(
-        latitude && longitude
-            ? `/api/posts?latitude=${latitude}&longitude=${longitude}`
-            : null
-    );
+    const { data, setSize } = useSWRInfinite<PostsResponse>((index, previousPageData) => {
+        if (index === 0) return `/api/posts?page=1` + (latitude && longitude ? `&latitude=${latitude}&longitude=${longitude}` : "");
+        if (index + 1 > previousPageData.pages) return null;
+        return `/api/posts?page=${index + 1}` + (latitude && longitude ? `&latitude=${latitude}&longitude=${longitude}` : "");
+    }, fetcher);
+    const posts = data ? data.map((item) => item.posts).flat() : [];
+    const page = useInfiniteScroll();
+    useEffect(() => {
+        setSize(page);
+    }, [setSize, page]);
     return (
         <Layout hasTabBar title={"동네생활"}>
             <div className="space-y-2">
-            {data?.posts?.map((post) => (
+            {posts?.map((post) => (
                 <Link legacyBehavior key={post.id} href={`/community/${post.id}`}>
                     <a className="flex cursor-pointer ml-2 flex-col pt-4 items-start">
                         <span className="flex ml-4 items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">

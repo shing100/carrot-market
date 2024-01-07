@@ -6,7 +6,9 @@ export const GET = authHandler(async (req: Request, res: Response) => {
     const params = new URLSearchParams(req.url.split("?")[1]);
     const latitude = Number(params.get("latitude"));
     const longitude = Number(params.get("longitude"));
+    const page: number = Number(params.get("page"));
     const { session : { user }}: any = req;
+    const postCount = await client.post.count()
     const posts = await client.post.findMany({
         include: {
             user: {
@@ -36,7 +38,9 @@ export const GET = authHandler(async (req: Request, res: Response) => {
                 gte: longitude - 0.02,
                 lte: longitude + 0.02,
             },
-        }
+        },
+        take: 10,
+        skip: (+page - 1) * 10,
     }).then(posts => posts.map(post => ({
         ...post,
         wondering: post.wondering.length > 0,
@@ -45,6 +49,7 @@ export const GET = authHandler(async (req: Request, res: Response) => {
     return NextResponse.json({
         ok: true,
         posts,
+        pages: Math.ceil(postCount / 10),
     });
 });
 

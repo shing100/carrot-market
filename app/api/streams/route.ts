@@ -3,21 +3,30 @@ import {NextResponse} from "next/server";
 import authHandler from "@/libs/server/authHandler";
 
 export const GET = authHandler(async (req: Request, res: Response) => {
-   const streams = await client.stream.findMany({
-         include: {
-              user: {
+    const params = new URLSearchParams(req.url.split("?")[1]);
+    const page: number = Number(params.get("page"));
+    const streamCount = await client.stream.count()
+    const streams = await client.stream.findMany({
+       take: 10,
+       skip: (+page - 1) * 10,
+        orderBy: {
+         createdAt: 'desc',
+        },
+        include: {
+            user: {
                 select: {
-                     id: true,
-                     name: true,
-                     avatar: true,
+                    id: true,
+                    name: true,
+                    avatar: true,
                 }
-              },
-         }
+            },
+        },
     });
 
    return NextResponse.json({
         ok: true,
         streams,
+        pages: Math.ceil(streamCount / 10),
    });
 });
 

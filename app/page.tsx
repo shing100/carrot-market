@@ -4,8 +4,10 @@ import Item from "../components/item";
 import FloatingButton from "../components/floating-button";
 import useUser from "@/libs/client/useUser";
 import Head from "next/head";
-import useSWR from "swr";
 import {Product} from "@prisma/client";
+import useSWRInfinite from "swr/infinite";
+import {useInfiniteScroll} from "@/libs/client/useinfiniteScroll";
+import {useEffect} from "react";
 
 export interface ProudctWithHeart extends Product {
     _count: {
@@ -16,21 +18,35 @@ export interface ProudctWithHeart extends Product {
 interface ProductsResponse {
     ok : boolean;
     products: ProudctWithHeart[];
+    pages: number;
 }
+
+const getKey = (pageIndex: number, previousPageData: ProductsResponse) => {
+    if (pageIndex === 0) return `/api/products?page=1`;
+    if (pageIndex + 1 > previousPageData.pages) return null;
+    return `/api/products?page=${pageIndex + 1}`;
+};
+
+const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Page() {
     const { user, isLoading } = useUser();
-    const { data } = useSWR<ProductsResponse>("/api/products");
+    const { data, setSize } = useSWRInfinite<ProductsResponse>(getKey, fetcher);
+    const products = data ? data.map((item) => item.products).flat() : [];
+    const page = useInfiniteScroll();
+    useEffect(() => {
+        setSize(page);
+    }, [setSize, page]);
     return (
         <Layout title={"홈"} hasTabBar>
             <Head>
                 <title>Home</title>
             </Head>
             <div className={"flex flex-col space-y-5"}>
-                {data?.products?.map((product) => (
+                {products?.map((product) => (
                     <Item
-                        id={product.id}
                         key={product.id}
+                        id={product.id}
                         title={product.name}
                         price={product.price}
                         hearts={product._count.favs}

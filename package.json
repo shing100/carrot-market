@@ -20,6 +20,7 @@
     "react-hook-form": "^7.49.2",
     "react-loading-skeleton": "^3.3.1",
     "swr": "^2.2.4",
+    "ts-node": "^10.9.2",
     "twilio": "^4.20.0"
   },
   "devDependencies": {
@@ -33,5 +34,8 @@
     "prisma": "^5.7.1",
     "tailwindcss": "^3.3.6",
     "typescript": "^5"
+  },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   }
 }
