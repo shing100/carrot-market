@@ -108,3 +108,27 @@ mutate('/api/user');
 
 ### Relation count
 - https://www.prisma.io/docs/concepts/components/prisma-client/aggregation-grouping-summarizing#filter-the-relation-count
+
+
+### cloudflare
+
+#### Remote Images
+- 원격 이미지를 사용하려면 src 속성이 URL 문자열이어야 하며 relative 또는 absolute일 수 있습니다. Next.js는 빌드 프로세스 동안 원격 파일에 액세스할 수 없으므로 width, height 및 선택적 blurDataURL props을 수동으로 제공해야 합니다.
+> https://nextjs.org/docs/basic-features/image-optimization#remote-images
+
+- Domains
+-이때 Next.js 이미지 최적화 API를 사용하면서 원격 이미지에 접근하고 싶을 수 있습니다. 이렇게 하려면 loader를 기본 설정으로 두고 이미지 src에 대한 절대 URL을 입력합니다.
+- 악의적인 사용자로부터 애플리케이션을 보호하려면 이러한 방식으로 접근하려는 원격 도메인 목록을 아래와 같이 next.config.js 파일에 정의해야 합니다.
+
+// next.config.js
+```
+module.exports = {
+images: {
+domains: ['example.com', 'example2.com'],
+},
+}
+```
+> https://nextjs.org/docs/basic-features/image-optimization#domains
+
+- next/image 구성되지 않은 호스트
+> https://nextjs.org/docs/messages/next-image-unconfigured-host#why-this-error-occurred

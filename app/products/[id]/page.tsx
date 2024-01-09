@@ -10,6 +10,7 @@ import {Product, User} from "@prisma/client";
 import useMutation from "@/libs/client/useMutation";
 import {cls} from "@/libs/client/utils";
 import useUser from "@/libs/client/useUser";
+import Image from "next/image";
 
 interface ProductWithUser extends Product {
     user: User;
@@ -41,14 +42,20 @@ const ItemDetail: NextPage = ( props ) => {
         <Layout canGoBack>
             <div key={data?.product?.id} className={"px-4 py-4"}>
                 <div className={"mb-8"}>
-                    {data?.product?.image ? (
-                        <img src={`https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${data?.product.image}/public`} className={"h-96 bg-slate-300"} />
-                    ) : (
-                        <div className={"h-96 bg-slate-300"} />
-                    )}
+                    <div className="relative pb-80">
+                        <Image
+                            alt={"상품사진"}
+                            src={`https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${data?.product.image}/public`}
+                            className="bg-slate-300 object-center"
+                            layout="fill"
+                        />
+                    </div>
                     <div className={"flex cursor-pointer py-3 border-t border-b items-center space-x-3"}>
                         {user?.avatar ? (
-                            <img
+                            <Image
+                                alt={"프로필사진"}
+                                width={42}
+                                height={42}
                                 src={`https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${user?.avatar}/avatar`}
                                 className="w-12 h-12 bg-slate-500 rounded-full"
                             />
@@ -115,7 +122,7 @@ const ItemDetail: NextPage = ( props ) => {
                         {data?.relatedProducts.map((product) => (
                             <Link key={product.id} legacyBehavior href={`/products/${product.id}`}>
                                 <div key={product.id} className={'cursor-pointe'}>
-                                        <div className={"h-56 w-full mb-4 bg-slate-300"} />
+                                        <Image height={264} width={264} src={`https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${product.image}/public`} alt={product.name} className={"h-56 w-full mb-4 bg-slate-300"} />
                                         <h3 className={"-mb-1 text-gray-700"}>{product.name}</h3>
                                         <span className={"text-sm font-medium text-gray-900"}>{product.price}원</span>
                                 </div>
