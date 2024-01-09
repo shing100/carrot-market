@@ -41,9 +41,20 @@ const ItemDetail: NextPage = ( props ) => {
         <Layout canGoBack>
             <div key={data?.product?.id} className={"px-4 py-4"}>
                 <div className={"mb-8"}>
-                    <div className={"h-96 bg-slate-300"} />
+                    {data?.product?.image ? (
+                        <img src={`https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${data?.product.image}/public`} className={"h-96 bg-slate-300"} />
+                    ) : (
+                        <div className={"h-96 bg-slate-300"} />
+                    )}
                     <div className={"flex cursor-pointer py-3 border-t border-b items-center space-x-3"}>
-                        <div className={"w-12 h-12 rounded-full bg-slate-300"} />
+                        {user?.avatar ? (
+                            <img
+                                src={`https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${user?.avatar}/avatar`}
+                                className="w-12 h-12 bg-slate-500 rounded-full"
+                            />
+                        ) : (
+                            <div className="w-12 h-12 bg-slate-500 rounded-full" />
+                        )}
                         <div>
                             {data?.product?.user?.name ?
                                 <p className={"text-sm font-medium text-gray-700"}>{data?.product?.user?.name}</p>

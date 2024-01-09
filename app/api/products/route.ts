@@ -26,7 +26,7 @@ export const GET = authHandler(async (req: Request, res: Response) => {
 
 export const POST = authHandler(async (req: Request, res: Response) => {
     const { session: { user }}: any = req;
-    const { name, price, description, latitude, longitude } = await req.json();
+    const { name, price, description, latitude, longitude, photoId } = await req.json();
 
     const product = await client.product.create({
         data: {
@@ -35,7 +35,7 @@ export const POST = authHandler(async (req: Request, res: Response) => {
             description,
             latitude,
             longitude,
-            image: "xx",
+            image: photoId,
             user: {
                 connect: {
                     id: user.id,

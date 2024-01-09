@@ -16,7 +16,7 @@ export const GET = authHandler(async (req: Request, res: Response) => {
 
 export const POST = authHandler(async (req: Request, res: Response) => {
     const { session : { user } }: any = req;
-    const { name, email, phone } = await req.json();
+    const { name, email, phone, avatarId } = await req.json();
 
     if (email && email !== user.email) {
         const alreadyExists = Boolean(await client.user.findFirst({
@@ -76,6 +76,15 @@ export const POST = authHandler(async (req: Request, res: Response) => {
             },
         });
     }
-
+    if (avatarId) {
+        await client.user.update({
+            where: {
+                id: user.id,
+            },
+            data: {
+                avatar: avatarId,
+            }
+        });
+    }
     return NextResponse.json({ ok: true });
 })
