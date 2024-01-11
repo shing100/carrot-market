@@ -15,7 +15,9 @@ export default function RootLayout({children,}: { children: React.ReactNode }) {
         <html lang="ko">
             <body >
                 <div className="w-full max-w-xl mx-auto">
-                    <SWRProvider children={children} ></SWRProvider>
+                    <SWRProvider>
+                        {children}
+                    </SWRProvider>
                 </div>
             </body>
         </html>
