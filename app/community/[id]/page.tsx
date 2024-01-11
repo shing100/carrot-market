@@ -11,6 +11,7 @@ import {useForm} from "react-hook-form";
 import {useEffect} from "react";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import Image from "next/image";
 
 interface AnswerWithUser extends Answer {
     user: User;
@@ -81,7 +82,11 @@ const CommunityPostDetail: NextPage = (props) => {
                   동네질문
                 </span>
                 <div className="flex mb-3 px-4 cursor-pointer pb-3  border-b items-center space-x-3">
-                    <div className="w-10 h-10 rounded-full bg-slate-300" />
+                    {data?.post.user.avatar ? (
+                        <Image width={40} height={40} className={"w-10 h-10 rounded-full bg-slate-300"} src={`https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${data?.post.user.avatar}/avatar`} alt={data?.post.user.name} />
+                    ) : (
+                        <div className="w-10 h-10 rounded-full bg-slate-300" />
+                    )}
                     <div>
                         {isLoading ? <Skeleton count={1} /> : null}
                         <p className="text-sm font-medium text-gray-700">{data?.post?.user?.name}</p>
@@ -137,7 +142,11 @@ const CommunityPostDetail: NextPage = (props) => {
                 <div className="px-4 my-5 space-y-5">
                     {data?.post?.answers?.map((answer) => (
                         <div key={answer.id} className="flex items-start space-x-3">
-                            <div className="w-8 h-8 bg-slate-200 rounded-full" />
+                            {answer.user.avatar ? (
+                                <Image width={40} height={40} className={"w-10 h-10 rounded-full bg-slate-300"} src={`https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${answer.user.avatar}/avatar`} alt={answer.user.name} />
+                            ) : (
+                                <div className="w-10 h-10 rounded-full bg-slate-300" />
+                            )}
                             <div>
                                 <span className="text-sm block font-medium text-gray-700">
                                     {answer.user.name}
@@ -153,7 +162,7 @@ const CommunityPostDetail: NextPage = (props) => {
                 <form onSubmit={handleSubmit(onValid)}>
                     <div className="px-4">
                         <TextArea
-                            register={register("answer", {required: true, minLength: 5})}
+                            register={register("answer", {required: true, minLength: 2})}
                             name="description"
                             placeholder="질문에 답변해주세요!"
                             required

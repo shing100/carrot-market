@@ -8,7 +8,7 @@ const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 export const POST = async (req: Request, res: Response) => {
     const { phone, email } = await req.json();
-    const user = phone ? { phone: +phone } : { email };
+    const user = phone ? { phone: phone } : { email };
     const payload = Math.floor(100000 + Math.random() * 900000) + "";
     const token = await client.token.create({
         data: {
@@ -27,12 +27,13 @@ export const POST = async (req: Request, res: Response) => {
         },
     });
     if (phone) {
+        /*
         const message = await twilioClient.messages.create({
             messagingServiceSid: process.env.TWILIO_MSID,
             to: process.env.MY_PHONE!,
             body: `Your login token is ${payload}.`,
         });
-        console.log(message);
+         */
     } else if (email) {
         /*
         const email = await mail.send({

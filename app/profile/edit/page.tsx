@@ -7,6 +7,8 @@ import useUser from "@/libs/client/useUser";
 import {useForm} from "react-hook-form";
 import {useEffect, useState} from "react";
 import useMutation from "@/libs/client/useMutation";
+import {router} from "next/client";
+import {useRouter} from "next/navigation";
 
 interface EditProfileForm {
     name?: string;
@@ -23,11 +25,13 @@ interface EditProfileResponse {
 
 const EditProfile: NextPage = () => {
     const { user } = useUser();
+    const router = useRouter();
     const { register,
         setValue,
         handleSubmit,
         setError,
         formState: { errors },
+        clearErrors,
         watch
     } = useForm<EditProfileForm>();
     useEffect(() => {
@@ -39,11 +43,16 @@ const EditProfile: NextPage = () => {
                 `https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${user?.avatar}/avatar`
             );
     }, [user, setValue])
-
+    const onChange = () => {
+        if (errors.formErrors?.message) {
+            clearErrors("formErrors");
+        }
+    };
     const [ editProfile, { data, loading }] = useMutation<EditProfileResponse>("/api/users/me");
     useEffect(() => {
         if (data?.ok) {
             alert("프로필이 업데이트되었습니다.");
+            router.push(`/profile`);
         } else if (data?.error) {
             setError("formErrors", {message: data.error});
         }
@@ -55,6 +64,9 @@ const EditProfile: NextPage = () => {
         }
         if (email === "" && phone === "") {
             return setError("formErrors", {message: '이메일 또는 핸드폰 번호를 입력해주세요.'});
+        }
+        if (email && !email.includes("@")) {
+            return setError("email", {message: '이메일 형식이 올바르지 않습니다.'});
         }
         if (avatar && avatar.length > 0 && user) {
             const file = avatar[0];
@@ -77,6 +89,7 @@ const EditProfile: NextPage = () => {
             editProfile({name, email, phone});
         }
     };
+
     const [avatarPreview, setAvatarPreview] = useState("");
     const avatar = watch("avatar");
     useEffect(() => {
@@ -87,7 +100,7 @@ const EditProfile: NextPage = () => {
     }, [avatar]);
     return (
         <Layout canGoBack title="Edit Profile">
-            <form onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-4">
+            <form onClick={onChange} onSubmit={handleSubmit(onValid)} className="py-10 px-4 space-y-4">
                 <div className="flex items-center space-x-3">
                     {avatarPreview ? (
                         <img

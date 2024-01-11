@@ -45,7 +45,7 @@ const ItemDetail: NextPage = ( props ) => {
                     <div className="relative pb-80">
                         <Image
                             alt={"상품사진"}
-                            src={`https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${data?.product.image}/public`}
+                            src={`https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${data?.product?.image}/public`}
                             className="bg-slate-300 object-center"
                             layout="fill"
                         />
@@ -56,7 +56,7 @@ const ItemDetail: NextPage = ( props ) => {
                                 alt={"프로필사진"}
                                 width={42}
                                 height={42}
-                                src={`https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${user?.avatar}/avatar`}
+                                src={`https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${data?.product?.user?.avatar}/avatar`}
                                 className="w-12 h-12 bg-slate-500 rounded-full"
                             />
                         ) : (
@@ -121,7 +121,7 @@ const ItemDetail: NextPage = ( props ) => {
                     <div className={"mt-6 grid grid-cols-2 gap-4"}>
                         {data?.relatedProducts.map((product) => (
                             <Link key={product.id} legacyBehavior href={`/products/${product.id}`}>
-                                <div key={product.id} className={'cursor-pointe'}>
+                                <div key={product.id} className={'cursor-pointer'}>
                                         <Image height={264} width={264} src={`https://imagedelivery.net/u1s6ESEE0Zneb43goOtlDA/${product.image}/public`} alt={product.name} className={"h-56 w-full mb-4 bg-slate-300"} />
                                         <h3 className={"-mb-1 text-gray-700"}>{product.name}</h3>
                                         <span className={"text-sm font-medium text-gray-900"}>{product.price}원</span>
