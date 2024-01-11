@@ -14,15 +14,6 @@ import 'react-loading-skeleton/dist/skeleton.css'
 import Image from "next/image";
 import {useFormatter} from "next-intl";
 
-const useRelativeTime = (dateStr: string) => {
-    const format = useFormatter();
-    const dateTime = new Date(dateStr);
-
-    // At 2020-11-20T10:36:00.000Z,
-    // this will render "2 hours ago"
-    return format.relativeTime(dateTime);
-}
-
 interface AnswerWithUser extends Answer {
     user: User;
 }
@@ -56,6 +47,14 @@ const CommunityPostDetail: NextPage = (props) => {
     const { register, handleSubmit, reset} = useForm<AnswerForm>();
     const { data, mutate, error, isLoading } = useSWR<CommunityPostResponse>(params.id ? `/api/posts/${params.id}`:  null);
     const [ wonder, { loading } ] = useMutation(`/api/posts/${params.id}/wonder`);
+    const useRelativeTime = (dateStr: string) => {
+        const format = useFormatter();
+        const dateTime = new Date(dateStr);
+
+        // At 2020-11-20T10:36:00.000Z,
+        // this will render "2 hours ago"
+        return format.relativeTime(dateTime);
+    }
     const onWonderClick = () => {
         if (!data) return;
         mutate({
