@@ -1,4 +1,4 @@
-import Layout from "@components/layout";
+import Layout from "@/components/layout";
 import matter from "gray-matter";
 import { readdirSync, readFileSync } from "fs";
 import { NextPage } from "next";
@@ -13,7 +13,7 @@ interface Post {
 
 const Blog: NextPage<{ posts: Post[] }> = ({ posts }) => {
     return (
-        <Layout title="Blog" seoTitle="Blog">
+        <Layout title="Blog">
             <h1 className="font-semibold text-center text-xl mt-5 mb-10">
                 Latest Posts:
             </h1>
