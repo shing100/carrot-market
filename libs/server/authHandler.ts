@@ -24,6 +24,7 @@ export default function authHandler(handler: (req: Request, res: Response, isPri
                 }
             });
             session.user = profile;
+            // @ts-ignore
             req.session = session;
         }
 
