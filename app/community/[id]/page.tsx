@@ -47,16 +47,17 @@ const CommunityPostDetail: NextPage = (props) => {
     const { data, mutate, error, isLoading } = useSWR<CommunityPostResponse>(params.id ? `/api/posts/${params.id}`:  null);
     const [ wonder, { loading } ] = useMutation(`/api/posts/${params.id}/wonder`);
     const onWonderClick = () => {
+        if (!data) return;
         mutate({
             ...data,
             post: {
-                ...data?.post,
+                ...data.post,
                 _count: {
-                    ...data?.post?._count,
-                    wondering: data?.isWondering ? data?.post?._count?.wondering - 1 : data?.post?._count?.wondering + 1,
+                    ...data.post._count,
+                    wondering: data.isWondering ? data.post._count.wondering - 1 : data.post._count.wondering + 1,
                 },
             },
-            isWondering: !data?.isWondering,
+            isWondering: !data.isWondering,
         }, false);
         if (!loading) {
             wonder({});
