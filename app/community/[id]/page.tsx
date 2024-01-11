@@ -6,12 +6,22 @@ import {Answer, Post, User} from "@prisma/client";
 import useSWR from "swr";
 import Link from "next/link";
 import useMutation from "@/libs/client/useMutation";
-import {cls, useRelativeTime} from "@/libs/client/utils";
+import {cls} from "@/libs/client/utils";
 import {useForm} from "react-hook-form";
 import {useEffect} from "react";
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import Image from "next/image";
+import {useFormatter} from "next-intl";
+
+const useRelativeTime = (dateStr: string) => {
+    const format = useFormatter();
+    const dateTime = new Date(dateStr);
+
+    // At 2020-11-20T10:36:00.000Z,
+    // this will render "2 hours ago"
+    return format.relativeTime(dateTime);
+}
 
 interface AnswerWithUser extends Answer {
     user: User;
