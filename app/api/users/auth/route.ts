@@ -3,8 +3,8 @@ import twilio from "twilio";
 import {NextResponse} from "next/server";
 import client from "@/libs/server/client";
 
-mail.setApiKey(process.env.SENDGRID_API_KEY!);
-const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
+// mail.setApiKey(process.env.SENDGRID_API_KEY!);
+// const twilioClient = twilio(process.env.TWILIO_SID, process.env.TWILIO_TOKEN);
 
 export const POST = async (req: Request, res: Response) => {
     const { phone, email } = await req.json();
