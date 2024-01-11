@@ -16,7 +16,7 @@ bun dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+You can start editing the page by modifying `app/route.tsx`. The page auto-updates as you edit the file.
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
@@ -132,3 +132,52 @@ domains: ['example.com', 'example2.com'],
 
 - next/image 구성되지 않은 호스트
 > https://nextjs.org/docs/messages/next-image-unconfigured-host#why-this-error-occurred
+
+
+### Dynamic Import
+
+- Next.js는 JavaScript용 ES2020 Dynamic import()를 지원합니다. 이를 통해 JavaScript 모듈을 동적으로 가져와서 작업할 수 있습니다. 또한 SSR과 함께 작동합니다. dynamic()은 React.lazy와 유사하게 사전 로드가 작동하도록 모듈의 최상위에 표시되어야 하므로 React 렌더링 내부에서 사용할 수 없습니다.
+- ex) 사용자가 검색을 입력한 후에만 브라우저에서 모듈을 동적으로 로드합니다.
+```
+import dynamic from 'next/dynamic'
+
+const DynamicComponent = dynamic(() => import('../components/hello'))
+
+< div>
+< DynamicComponent />
+< /div>
+```
+> https://nextjs.org/docs/advanced-features/dynamic-import
+
+### getServerSideProps
+
+- 페이지에서 getServerSideProps(서버 측 렌더링)라는 함수를 export 하면 Next.js는 getServerSideProps에서 반환된 데이터를 사용하여 각 요청에서 이 페이지를 미리 랜더링합니다.
+```
+export async function getServerSideProps(context) {
+return {
+props: {}, // will be passed to the page component as props
+}
+}
+```
+> https://nextjs.org/docs/basic-features/data-fetching/get-server-side-props
+
+###  getStaticProps
+- getStaticProps는 항상 서버에서 실행되고 클라이언트에서는 실행되지 않습니다. getStaticProps는 정적 HTML을 생성하므로 들어오는 request(예: 쿼리 매개변수 또는 HTTP 헤더)에 액세스할 수 없습니다. getStaticProps가 있는 페이지가 빌드 시 미리 렌더링되면 페이지 HTML 파일 외에도 Next.js가 getStaticProps 실행 결과를 포함하는 JSON 파일을 생성합니다.
+> https://nextjs.org/docs/basic-features/data-fetching/get-static-props
+
+```
+readdireSync()
+디렉토리(폴더)의 내용을 읽습니다.
+https://nodejs.org/api/fs.html#fsreaddirsyncpath-options
+
+readFileSync()
+path의 내용을 반환합니다.
+https://nodejs.org/api/fs.html#fsreadfilesyncpath-options
+```
+#### gray-matter
+- 문자열 또는 파일에서 front-matter을 파싱합니다.
+```
+npm i gray-matter
+https://github.com/jonschlinkert/gray-matter
+https://www.npmjs.com/package/gray-matter
+```

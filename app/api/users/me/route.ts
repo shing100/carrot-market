@@ -3,6 +3,7 @@ import authHandler from "@/libs/server/authHandler";
 import client from "@/libs/server/client";
 
 export const GET = authHandler(async (req: Request, res: Response) => {
+    //@ts-ignore
     if (!req.session.user) return NextResponse.json({ ok: false });
 
     const { session : { user }}: any = req;

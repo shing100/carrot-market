@@ -8,6 +8,8 @@ import {Product} from "@prisma/client";
 import useSWRInfinite from "swr/infinite";
 import {useInfiniteScroll} from "@/libs/client/useinfiniteScroll";
 import {useEffect} from "react";
+import Skeleton from "react-loading-skeleton";
+import 'react-loading-skeleton/dist/skeleton.css'
 
 export interface ProudctWithHeart extends Product {
     _count: {
@@ -30,8 +32,8 @@ const getKey = (pageIndex: number, previousPageData: ProductsResponse) => {
 const fetcher = (url: string) => fetch(url).then((res) => res.json());
 
 export default function Page() {
-    const { user, isLoading } = useUser();
-    const { data, setSize } = useSWRInfinite<ProductsResponse>(getKey, fetcher);
+    const { user } = useUser();
+    const { data, setSize, isLoading } = useSWRInfinite<ProductsResponse>(getKey, fetcher);
     const products = data ? data.map((item) => item.products).flat() : [];
     const page = useInfiniteScroll();
     useEffect(() => {
@@ -43,6 +45,7 @@ export default function Page() {
                 <title>Home</title>
             </Head>
             <div className={"flex flex-col space-y-5"}>
+                {isLoading ? <Skeleton width={"95%"} height={"100px"} className={"w-full justify-center mt-2 mb-3 rounded-md"} count={5} /> : null}
                 {products?.map((product) => (
                     <Item
                         key={product.id}
