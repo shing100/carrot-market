@@ -6,7 +6,7 @@ import {Answer, Post, User} from "@prisma/client";
 import useSWR from "swr";
 import Link from "next/link";
 import useMutation from "@/libs/client/useMutation";
-import {cls} from "@/libs/client/utils";
+import {cls, useRelativeTime} from "@/libs/client/utils";
 import {useForm} from "react-hook-form";
 import {useEffect} from "react";
 import Skeleton from 'react-loading-skeleton'
@@ -152,7 +152,7 @@ const CommunityPostDetail: NextPage = (props) => {
                                 <span className="text-sm block font-medium text-gray-700">
                                     {answer.user.name}
                                 </span>
-                                <span className="text-xs text-gray-500 block ">{answer.createdAt}</span>
+                                <span className="text-xs text-gray-500 block ">{useRelativeTime(answer.createdAt.toString())}</span>
                                 <p className="text-gray-700 mt-2">
                                     {answer.answer}
                                 </p>

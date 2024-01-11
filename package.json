@@ -16,6 +16,7 @@
     "gray-matter": "^4.0.3",
     "iron-session": "^8.0.1",
     "next": "14.0.4",
+    "next-intl": "^3.4.2",
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.49.2",
