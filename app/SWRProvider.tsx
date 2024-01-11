@@ -10,9 +10,7 @@ export const SWRProvider = ({ children }: { children: React.ReactNode; }) => {
         // refreshInterval: 2000,
                 fetcher: (url: string) => fetch(url).then(res => res.json())
             }}>
-            <>
-                {children}
-            </>
+            {children}
         </SWRConfig>
     )
 };
